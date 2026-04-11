@@ -1,7 +1,7 @@
 // Copyright NineForce Entertainment
 
 
-#include "AuraCharacterBase.h"
+#include "Character/AuraCharacterBase.h"
 
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
@@ -18,7 +18,7 @@ void AAuraCharacterBase::BeginPlay()
 	
 }
 
-// Called every frame
+// Called every frameA
 void AAuraCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
