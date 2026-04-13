@@ -1,5 +1,5 @@
 // Copyright NineForce Entertainment
 
 
-#include "Character/AuraPlayer.h"
+#include "Game/AuraGameModeBase.h"
 
