@@ -2,7 +2,11 @@
 
 #include "Character/AuraPlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
+#include "Aura/Public/Player/AuraPlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/AuraPlayerController.h"
+#include "UI/HUD/AuraHUD.h"
 
 AAuraPlayerCharacter::AAuraPlayerCharacter()
 {
@@ -17,4 +21,37 @@ AAuraPlayerCharacter::AAuraPlayerCharacter()
 		bUseControllerRotationRoll  = false;
 		bUseControllerRotationYaw   = false;
 	}
+}
+
+void AAuraPlayerCharacter::InternalInitAbilityActorInfo()
+{
+	auto TargetPlayerState = GetPlayerState<AAuraPlayerState>();
+	auto TargetComponent   = TargetPlayerState->GetAbilitySystemComponent();
+	TargetComponent->InitAbilityActorInfo(TargetPlayerState, this);
+
+	AbilitySystemComponent = TargetComponent;
+	AttributeSet           = TargetPlayerState->GetAttributeSet();
+
+	if (auto PlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		if (auto TargetHUD = Cast<AAuraHUD>(PlayerController->GetHUD()))
+		{
+			TargetHUD->InitializeHUD(PlayerController, TargetPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
+}
+
+// this is executed by server
+void AAuraPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InternalInitAbilityActorInfo();
+}
+
+void AAuraPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	InternalInitAbilityActorInfo();
 }
