@@ -27,7 +27,7 @@ void UMainPanelWidgetController::BindCallbacksToDependencies()
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetMaxHealthPointAttribute()).AddUObject(
 		this,
-		&UMainPanelWidgetController::HealthPointChanged
+		&UMainPanelWidgetController::MaxHealthPointChanged
 	);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetManaPointAttribute()).AddUObject(
