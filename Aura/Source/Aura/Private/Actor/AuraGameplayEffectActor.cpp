@@ -116,7 +116,7 @@ void AAuraGameplayEffectActor::ApplyGameplayEffectToActor(AActor* InTargetActor,
 	ContextHandle.AddSourceObject(this);
 	FGameplayEffectSpecHandle TargetEffectSpecHandle = TargetASC->MakeOutgoingSpec(
 		InAuraGameplayEffectData.GameplayEffectClass,
-		1,
+		Level,
 		ContextHandle
 	);
 	FActiveGameplayEffectHandle TargetGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*TargetEffectSpecHandle.Data.Get());

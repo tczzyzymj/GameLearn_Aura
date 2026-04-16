@@ -79,6 +79,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Aura GAS")
 	TArray<FAuraGameplayEffectData> GameplayEffectDataArray;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Aura GAS")
+	float Level = 1;
 
 	TMap<TObjectPtr<AActor>, TArray<FActiveGameplayEffectHandle>> ActorInfinityGameplayEffectMap;
 
