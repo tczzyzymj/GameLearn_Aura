@@ -48,12 +48,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	Super::PostGameplayEffectExecute(Data);
 	FEffectPropertiesData EffectPropertiesData;
 	SetEffectProperties(Data, EffectPropertiesData);
-	if (Data.EvaluatedData.Attribute == GetHealthPointAttribute())
-	{
-		UE_LOG(LogTemp, Log, TEXT("HP value is %f"), GetHealthPoint());
-
-		UE_LOG(LogTemp, Log, TEXT("HP value from post execute is %f"), Data.EvaluatedData.Magnitude);
-	}
 }
 
 void UAuraAttributeSet::OnRep_HealthPoint(const FGameplayAttributeData& OldValue)

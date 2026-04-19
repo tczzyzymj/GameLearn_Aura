@@ -3,6 +3,7 @@
 #include "Character/AuraPlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Public/Player/AuraPlayerState.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
@@ -23,14 +24,15 @@ AAuraPlayerCharacter::AAuraPlayerCharacter()
 	}
 }
 
-void AAuraPlayerCharacter::InternalInitAbilityActorInfo()
+void AAuraPlayerCharacter::InitAbilityActorInfo()
 {
 	auto TargetPlayerState = GetPlayerState<AAuraPlayerState>();
-	auto TargetComponent   = TargetPlayerState->GetAbilitySystemComponent();
-	TargetComponent->InitAbilityActorInfo(TargetPlayerState, this);
-
-	AbilitySystemComponent = TargetComponent;
-	AttributeSet           = TargetPlayerState->GetAttributeSet();
+	check(TargetPlayerState);
+	AbilitySystemComponent = TargetPlayerState->GetAbilitySystemComponent();
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(TargetPlayerState, this);
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityInfoSet();
+	AttributeSet = TargetPlayerState->GetAttributeSet();
 
 	if (auto PlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
@@ -46,12 +48,12 @@ void AAuraPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	InternalInitAbilityActorInfo();
+	InitAbilityActorInfo();
 }
 
 void AAuraPlayerCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	InternalInitAbilityActorInfo();
+	InitAbilityActorInfo();
 }

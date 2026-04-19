@@ -2,6 +2,8 @@
 
 #include "UI/Widget/Controller/MainPanelWidgetController.h"
 
+#include "GameplayEffectExtension.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 void UMainPanelWidgetController::BroadcastInitialValues()
@@ -20,43 +22,63 @@ void UMainPanelWidgetController::BindCallbacksToDependencies()
 
 	auto TargetAttribute = CastChecked<UAuraAttributeSet>(AttributeSet);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetHealthPointAttribute()).AddUObject(
-		this,
-		&UMainPanelWidgetController::HealthPointChanged
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetHealthPointAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Attribute)
+		{
+			OnHealthPointChanged.Broadcast(Attribute.NewValue);
+		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetMaxHealthPointAttribute()).AddUObject(
-		this,
-		&UMainPanelWidgetController::MaxHealthPointChanged
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetMaxHealthPointAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Attribute)
+		{
+			OnMaxHealthPointChanged.Broadcast(Attribute.NewValue);
+		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetManaPointAttribute()).AddUObject(
-		this,
-		&UMainPanelWidgetController::ManaPointChanged
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetManaPointAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Attribute)
+		{
+			OnManaPointChanged.Broadcast(Attribute.NewValue);
+		}
 	);
 
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetMaxManaPointAttribute()).AddUObject(
-		this,
-		&UMainPanelWidgetController::MaxManaPointChanged
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetMaxManaPointAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Attribute)
+		{
+			if (Attribute.GEModData)
+			{
+				// Attribute.GEModData->EffectSpec.GetAllAssetTags()
+			}
+			OnMaxManaPointChanged.Broadcast(Attribute.NewValue);
+		}
 	);
-}
-
-void UMainPanelWidgetController::HealthPointChanged(const FOnAttributeChangeData& InData) const
-{
-	OnHealthPointChanged.Broadcast(InData.NewValue);
-}
-
-void UMainPanelWidgetController::MaxHealthPointChanged(const FOnAttributeChangeData& InData) const
-{
-	OnMaxHealthPointChanged.Broadcast(InData.NewValue);
-}
-
-void UMainPanelWidgetController::ManaPointChanged(const FOnAttributeChangeData& InData) const
-{
-	OnManaPointChanged.Broadcast(InData.NewValue);
-}
-
-void UMainPanelWidgetController::MaxManaPointChanged(const FOnAttributeChangeData& InData) const
-{
-	OnMaxManaPointChanged.Broadcast(InData.NewValue);
+	if (auto TargetAuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		TargetAuraASC->OnEffectAppliedTagContainerDelegate.AddLambda(
+			[this](const FGameplayTagContainer& InContainer)
+			{
+				if (MessageWidgetDataTable == nullptr)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("MessageWidgetDataTable is nullptr"));
+					return;
+				}
+				auto TargetTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+				for (const auto& Tag : InContainer)
+				{
+					if (Tag.MatchesTag(TargetTag))
+					{
+						if (auto TargetRowData = MessageWidgetDataTable->FindRow<FUIWidgetDataRow>(Tag.GetTagName(), TEXT("")))
+						{
+							OnMessageWidget.Broadcast(*TargetRowData);
+						}
+						else
+						{
+							UE_LOG(LogTemp, Warning, TEXT("MessageWidgetDataTable doesn't contains key : %s"), *Tag.ToString());
+						}
+					}
+				}
+			}
+		);
+	}
 }

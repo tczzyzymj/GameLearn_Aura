@@ -27,4 +27,6 @@ protected:
 	bool bHighlighted;
 
 	virtual void BeginPlay() override;
+	
+	virtual void InitAbilityActorInfo() override;
 };
