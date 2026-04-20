@@ -24,11 +24,12 @@ void AAuraEnemy::BeginPlay()
 
 void AAuraEnemy::InitAbilityActorInfo()
 {
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityInfoSet();
-	}
+	check(AbilitySystemComponent);
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityInfoSet();
+
+	InitializeDefaultPrimaryAttributes();
 }
 
 void AAuraEnemy::HighlightActor()

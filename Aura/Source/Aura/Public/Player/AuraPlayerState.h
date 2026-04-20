@@ -26,9 +26,9 @@ public:
 	UAttributeSet* GetAttributeSet() const;
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(VisibleAnywhere, Category = "Aura Combat")
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(VisibleAnywhere, Category = "Aura Combat")
 	TObjectPtr<UAttributeSet> AttributeSet;
 };

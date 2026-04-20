@@ -41,6 +41,8 @@ void AAuraPlayerCharacter::InitAbilityActorInfo()
 			TargetHUD->InitializeHUD(PlayerController, TargetPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+
+	InitializeDefaultPrimaryAttributes();
 }
 
 // this is executed by server

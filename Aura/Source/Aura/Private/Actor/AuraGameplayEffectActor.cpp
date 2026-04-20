@@ -86,7 +86,10 @@ void AAuraGameplayEffectActor::InternalTickForStayGameplayEffect(float DeltaSeco
 	}
 }
 
-void AAuraGameplayEffectActor::ApplyGameplayEffectToActor(AActor* InTargetActor, const FAuraGameplayEffectData& InAuraGameplayEffectData)
+void AAuraGameplayEffectActor::ApplyGameplayEffectToActor(
+	AActor*                        InTargetActor,
+	const FAuraGameplayEffectData& InAuraGameplayEffectData
+)
 {
 	if (InTargetActor == nullptr)
 	{
@@ -119,7 +122,9 @@ void AAuraGameplayEffectActor::ApplyGameplayEffectToActor(AActor* InTargetActor,
 		Level,
 		ContextHandle
 	);
-	FActiveGameplayEffectHandle TargetGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*TargetEffectSpecHandle.Data.Get());
+	FActiveGameplayEffectHandle TargetGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(
+		*TargetEffectSpecHandle.Data.Get()
+	);
 
 	if (TargetGameplayEffectHandle.IsValid())
 	{
