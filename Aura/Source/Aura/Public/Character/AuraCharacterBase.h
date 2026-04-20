@@ -27,11 +27,13 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	void ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> InGameplayEffect, float InLevel) const;
 
 	virtual void InitAbilityActorInfo();
 	
-	void InitializeDefaultPrimaryAttributes();
-
+	void InitDefaultAttributes() const;
+	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
@@ -43,4 +45,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesGameplayEffect;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesGameplayEffect;
 };

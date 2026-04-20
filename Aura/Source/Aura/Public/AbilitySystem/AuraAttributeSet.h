@@ -100,7 +100,7 @@ public :
 	/* end Primary Properties */
 
 	/* secondary properties */
-	
+
 	// max hp , based on Vigor
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_MaxHealthPoint, Category = "Secondary Attribute")
 	FGameplayAttributeData MaxHealthPoint;
@@ -132,14 +132,18 @@ public :
 	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalChance);
 
 	// extra value added when critical happened, based on ArmorPenetration
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_CriticalDamage, Category = "Secondary Attribute")
-	FGameplayAttributeData CriticalDamage;
-	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalDamage);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_CriticalDamagePercent, Category = "Secondary Attribute")
+	FGameplayAttributeData CriticalDamagePercent;
+	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalDamagePercent);
 
 	// reduce critical chance, based on Armor
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_CriticalResistance, Category = "Secondary Attribute")
 	FGameplayAttributeData CriticalResistance;
 	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalResistance);
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_CriticalDamagePercentResistance, Category = "Secondary Attribute")
+	FGameplayAttributeData CriticalDamagePercentResistance;
+	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalDamagePercentResistance);
 
 	// how much health point auto add, per 1 second, based on Vigor
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_HealthRegeneration, Category = "Secondary Attribute")
@@ -170,7 +174,7 @@ public :
 	void OnRep_CriticalChance(const FGameplayAttributeData& OldValue);
 
 	UFUNCTION()
-	void OnRep_CriticalDamage(const FGameplayAttributeData& OldValue);
+	void OnRep_CriticalDamagePercent(const FGameplayAttributeData& OldValue);
 
 	UFUNCTION()
 	void OnRep_CriticalResistance(const FGameplayAttributeData& OldValue);
@@ -180,6 +184,9 @@ public :
 
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldValue);
+	
+	UFUNCTION()
+	void OnRep_CriticalDamagePercentResistance(const FGameplayAttributeData& OldValue);
 
 	/* end secondary properties*/
 

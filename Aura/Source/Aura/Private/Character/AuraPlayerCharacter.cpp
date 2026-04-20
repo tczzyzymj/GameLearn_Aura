@@ -42,7 +42,7 @@ void AAuraPlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 
-	InitializeDefaultPrimaryAttributes();
+	InitDefaultAttributes();
 }
 
 // this is executed by server

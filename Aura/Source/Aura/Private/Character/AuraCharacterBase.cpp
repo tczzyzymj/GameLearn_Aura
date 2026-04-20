@@ -29,15 +29,34 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }
 
-void AAuraCharacterBase::InitializeDefaultPrimaryAttributes()
+void AAuraCharacterBase::InitDefaultAttributes() const
 {
+	check(DefaultPrimaryAttributesGameplayEffect);
+	check(DefaultSecondaryAttributesGameplayEffect);
+	ApplyGameplayEffectToSelf(DefaultPrimaryAttributesGameplayEffect, 1);
+	ApplyGameplayEffectToSelf(DefaultSecondaryAttributesGameplayEffect, 1);
+}
+
+// Called when the game starts or when spawned
+void AAuraCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AAuraCharacterBase::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> InGameplayEffect, float InLevel) const
+{
+	if (InGameplayEffect == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AAuraCharacterBase::ApplyGameplayEffectToSelf, InGameplayEffect is nullptr!"));
+		return;
+	}
 	UAbilitySystemComponent* TargetASC = GetAbilitySystemComponent();
 	check(TargetASC);
 	FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
 	FGameplayEffectSpecHandle EffectSpec = TargetASC->MakeOutgoingSpec(
-		DefaultPrimaryAttributesGameplayEffect,
-		1,
+		InGameplayEffect,
+		InLevel,
 		EffectContext
 	);
 	FActiveGameplayEffectHandle EffectHandle = TargetASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
@@ -45,10 +64,4 @@ void AAuraCharacterBase::InitializeDefaultPrimaryAttributes()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Initialize apply GameplayEffect failed! Please check!"));
 	}
-}
-
-// Called when the game starts or when spawned
-void AAuraCharacterBase::BeginPlay()
-{
-	Super::BeginPlay();
 }
