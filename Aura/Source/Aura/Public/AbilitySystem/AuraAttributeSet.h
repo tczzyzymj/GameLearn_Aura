@@ -126,7 +126,7 @@ public :
 	FGameplayAttributeData BlockChance;
 	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, BlockChance);
 
-	// make damage to double plus critical bonus , based on ArmorPenetration
+	// make damage multiply CriticalDamagePercent , based on ArmorPenetration
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_CriticalChance, Category = "Secondary Attribute")
 	FGameplayAttributeData CriticalChance;
 	ATTRIBUTE_ACCESSORS_BASIC(UAuraAttributeSet, CriticalChance);

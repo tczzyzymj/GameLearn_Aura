@@ -49,4 +49,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributesGameplayEffect;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
+	TSubclassOf<UGameplayEffect> DefaultVitalAttributesGameplayEffect;
 };

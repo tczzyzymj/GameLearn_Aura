@@ -31,10 +31,9 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 
 void AAuraCharacterBase::InitDefaultAttributes() const
 {
-	check(DefaultPrimaryAttributesGameplayEffect);
-	check(DefaultSecondaryAttributesGameplayEffect);
 	ApplyGameplayEffectToSelf(DefaultPrimaryAttributesGameplayEffect, 1);
 	ApplyGameplayEffectToSelf(DefaultSecondaryAttributesGameplayEffect, 1);
+	ApplyGameplayEffectToSelf(DefaultVitalAttributesGameplayEffect, 1);
 }
 
 // Called when the game starts or when spawned
@@ -60,7 +59,7 @@ void AAuraCharacterBase::ApplyGameplayEffectToSelf(TSubclassOf<UGameplayEffect> 
 		EffectContext
 	);
 	FActiveGameplayEffectHandle EffectHandle = TargetASC->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), TargetASC);
-	if (!EffectHandle.IsValid())
+	if (!EffectHandle.WasSuccessfullyApplied())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Initialize apply GameplayEffect failed! Please check!"));
 	}
