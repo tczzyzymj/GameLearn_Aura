@@ -2,7 +2,12 @@
 
 #include "AuraAssetManager.h"
 
-#include "AuraGameplayTags.h"
+#include "AuraEnumToGASManager.h"
+#include "AbilitySystem/AuraAttributeSet.h"
+
+UAuraAssetManager::UAuraAssetManager()
+{
+}
 
 UAuraAssetManager& UAuraAssetManager::Get()
 {
@@ -14,5 +19,5 @@ UAuraAssetManager& UAuraAssetManager::Get()
 void UAuraAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
-	FAuraGameplayTags::InitNativeGameplayTags();
+	FAuraEnumToGASManager::Init();
 }

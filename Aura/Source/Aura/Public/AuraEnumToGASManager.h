@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "AuraGameDefine.h"
 #include "GameplayTagContainer.h"
 
@@ -10,20 +11,21 @@
  * Singleton containing native GameplayTags
  */
 
-struct FAuraGameplayTags
+struct FAuraEnumToGASManager
 {
 public:
-	static const FAuraGameplayTags& Get()
+	static FAuraEnumToGASManager& Get()
 	{
+		static FAuraEnumToGASManager Ins;
 		return Ins;
 	}
-
-	static void InitNativeGameplayTags();
 	
+	static void Init();
+
 	static FGameplayTag GetGameplayTagByAttributeType(EAuraAttributeTypes InAttributeType);
 
-	TMap<EAuraAttributeTypes,FGameplayTag> AttributesTagMapData;
 protected:
-private:
-	static FAuraGameplayTags Ins;
+	TMap<EAuraAttributeTypes, FGameplayTag> EnumToTagMapData;
+
+	TMap<EAuraAttributeTypes, FGameplayAttribute> EnumToAttributeMapData;
 };

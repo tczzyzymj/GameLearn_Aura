@@ -18,8 +18,6 @@ void UMainPanelWidgetController::BroadcastInitialValues()
 
 void UMainPanelWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
-
 	auto TargetAttribute = CastChecked<UAuraAttributeSet>(AttributeSet);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute->GetHealthPointAttribute()).AddLambda(
@@ -62,21 +60,6 @@ void UMainPanelWidgetController::BindCallbacksToDependencies()
 				{
 					UE_LOG(LogTemp, Warning, TEXT("MessageWidgetDataTable is nullptr"));
 					return;
-				}
-				auto TargetTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				for (const auto& Tag : InContainer)
-				{
-					if (Tag.MatchesTag(TargetTag))
-					{
-						if (auto TargetRowData = MessageWidgetDataTable->FindRow<FUIWidgetDataRow>(Tag.GetTagName(), TEXT("")))
-						{
-							OnMessageWidget.Broadcast(*TargetRowData);
-						}
-						else
-						{
-							UE_LOG(LogTemp, Warning, TEXT("MessageWidgetDataTable doesn't contains key : %s"), *Tag.ToString());
-						}
-					}
 				}
 			}
 		);

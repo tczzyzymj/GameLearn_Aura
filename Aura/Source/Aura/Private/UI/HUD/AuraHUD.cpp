@@ -1,6 +1,8 @@
 // Copyright NineForce Entertainment
 
 #include "UI/HUD/AuraHUD.h"
+
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "UI/Widget/AuraUserWidget.h"
 #include "UI/Widget//Controller/AuraWidgetController.h"
 #include "UI/Widget/Controller/MainPanelWidgetController.h"

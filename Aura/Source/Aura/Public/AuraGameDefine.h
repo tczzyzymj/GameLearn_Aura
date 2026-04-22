@@ -1,6 +1,14 @@
 ﻿#pragma once
 
 UENUM(BlueprintType)
+enum class EAuraAttributeImportance : uint8
+{
+	Vital,
+	Primary,
+	Secondary,
+};
+
+UENUM(BlueprintType)
 enum class EAuraAttributeTypes : uint8
 {
 	HealthPoint UMETA(
