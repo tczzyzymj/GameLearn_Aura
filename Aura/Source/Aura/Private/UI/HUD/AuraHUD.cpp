@@ -2,11 +2,6 @@
 
 #include "UI/HUD/AuraHUD.h"
 
-#include "AbilitySystem/AuraAttributeSet.h"
-#include "UI/Widget/AuraUserWidget.h"
-#include "UI/Widget//Controller/AuraWidgetController.h"
-#include "UI/Widget/Controller/MainPanelWidgetController.h"
-
 void AAuraHUD::InitializeHUD(
 	APlayerController*       InPlayerController,
 	APlayerState*            InPlayerState,
@@ -15,10 +10,9 @@ void AAuraHUD::InitializeHUD(
 )
 {
 	checkf(MainPanelClass, TEXT("AAuraHUD::InitializeHUD, Error! MainPanelClass is empty"));
-	checkf(MainPanelWidgetControllerClass, TEXT("AAuraHUD::InitializeHUD, Error! MainPanelClass is empty"));
 
 	FWidgetControllerParams Params(InPlayerController, InPlayerState, InASC, InAttributeSet);
-	GetAuraWidgetController(Params);
+	GetMainPanelWidgetController(Params);
 
 	MainPanel = CreateWidget<UAuraUserWidget>(GetWorld(), MainPanelClass);
 	if (MainPanel)
@@ -33,13 +27,28 @@ void AAuraHUD::InitializeHUD(
 	}
 }
 
-UAuraWidgetController* AAuraHUD::GetAuraWidgetController(const FWidgetControllerParams& InParams)
+UAuraWidgetController* AAuraHUD::GetMainPanelWidgetController(const FWidgetControllerParams& InParams)
 {
 	if (MainPanelWidgetController == nullptr)
 	{
-		MainPanelWidgetController = NewObject<UMainPanelWidgetController>(this, MainPanelWidgetControllerClass);
+		MainPanelWidgetController = NewObject<UMainPanelWidgetController>(this, UMainPanelWidgetController::StaticClass());
 		MainPanelWidgetController->SetWidgetControllerParams(InParams);
 		MainPanelWidgetController->BindCallbacksToDependencies();
+	}
+
+	return MainPanelWidgetController;
+}
+
+UAuraWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& InParams)
+{
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(
+			this,
+			UAttributeMenuWidgetController::StaticClass()
+		);
+		AttributeMenuWidgetController->SetWidgetControllerParams(InParams);
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
 	}
 
 	return MainPanelWidgetController;

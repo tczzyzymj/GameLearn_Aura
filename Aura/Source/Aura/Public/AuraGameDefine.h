@@ -11,6 +11,8 @@ enum class EAuraAttributeImportance : uint8
 UENUM(BlueprintType)
 enum class EAuraAttributeTypes : uint8
 {
+	None,
+
 	HealthPoint UMETA(
 		Importance = "Vital",
 		TagDevComment = "Character most important Attribute, if less or equal zero, character will die"

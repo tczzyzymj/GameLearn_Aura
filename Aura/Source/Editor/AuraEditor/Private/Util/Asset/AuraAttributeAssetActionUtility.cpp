@@ -34,7 +34,7 @@ void UAuraAttributeAssetActionUtility::FillAuraAttributeInfoData()
 			continue;
 		}
 		DataAsset->AuraAttributeInfos.Empty();
-		for (int Index = 0; Index < TargetEnum->NumEnums() - 1; Index++)
+		for (int Index = 1; Index < TargetEnum->NumEnums() - 1; Index++)
 		{
 			FAuraAttributeInfoData NewData = FAuraAttributeInfoData();
 			FString                TagName = FString::Printf(

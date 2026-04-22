@@ -22,7 +22,9 @@ public:
 	
 	static void Init();
 
-	static FGameplayTag GetGameplayTagByAttributeType(EAuraAttributeTypes InAttributeType);
+	static FGameplayTag GetGameplayTagByEnum(EAuraAttributeTypes InAttributeType);
+	
+	static FGameplayAttribute GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType);
 
 protected:
 	TMap<EAuraAttributeTypes, FGameplayTag> EnumToTagMapData;

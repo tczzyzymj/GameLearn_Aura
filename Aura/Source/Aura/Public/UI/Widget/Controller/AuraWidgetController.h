@@ -41,6 +41,36 @@ struct FWidgetControllerParams
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 };
 
+USTRUCT(BlueprintType)
+struct FAuraAttributeChangeData
+{
+	GENERATED_USTRUCT_BODY()
+
+	FAuraAttributeChangeData()
+	{
+		NewValue = 0;
+		OldValue = 0;
+	}
+
+	FAuraAttributeChangeData(const FOnAttributeChangeData& InAttributeChangeData)
+	{
+		Attribute = InAttributeChangeData.Attribute;
+		NewValue  = InAttributeChangeData.NewValue;
+		OldValue  = InAttributeChangeData.OldValue;
+	}
+
+	UPROPERTY(BlueprintReadOnly)
+	FGameplayAttribute Attribute;
+
+	UPROPERTY(BlueprintReadOnly)
+	float NewValue;
+
+	UPROPERTY(BlueprintReadOnly)
+	float OldValue;
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, FAuraAttributeChangeData, InData);
+
 /**
  * 
  */
@@ -53,9 +83,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& InParams);
 
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
-	
+
 	virtual void BindCallbacksToDependencies();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<APlayerController> PlayerController;

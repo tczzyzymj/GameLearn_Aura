@@ -3,8 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
+#include "AuraGameDefine.h"
+#include "GameplayEffect.h"
+#include "GameplayEffectTypes.h"
+#include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraBlueprintFunctionLibrary.generated.h"
+
 
 /**
  * 
@@ -17,4 +23,16 @@ class AURA_API UAuraBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Aura | AbilitySystemLibrary | WidgetController")
 	static UAuraWidgetController* GetWidgetController(const UObject* WorldContextObject);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Aura | AbilitySystemLibrary | Enum")
+	static int32 GetEAttributeTypeValueByIndex(int32 InIndex);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Aura | AbilitySystemLibrary | Enum")
+	static EAuraAttributeTypes GetEAttributeTypeByIndex(int32 InIndex);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Aura | AbilitySystemLibrary | Enum")
+	static FGameplayTag GetGameplayTagByEnum(EAuraAttributeTypes InType);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Aura | AbilitySystemLibrary | Enum")
+	static FGameplayAttribute GetGameplayAttributeByEnum(EAuraAttributeTypes InType);
 };

@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-
+#include "UI/Widget/AuraUserWidget.h"
+#include "UI/Widget/Controller/AuraWidgetController.h"
+#include "UI/Widget/Controller/AttributeMenuWidgetController.h"
+#include "UI/Widget/Controller/MainPanelWidgetController.h"
 #include "AuraHUD.generated.h"
 
 struct FWidgetControllerParams;
-class UMainPanelWidgetController;
-class UAuraWidgetController;
 class UAbilitySystemComponent;
 class UAttributeSet;
 class UAuraUserWidget;
@@ -33,7 +34,9 @@ public:
 		UAttributeSet*           InAttributeSet
 	);
 
-	UAuraWidgetController* GetAuraWidgetController(const FWidgetControllerParams& InParams);
+	UAuraWidgetController* GetMainPanelWidgetController(const FWidgetControllerParams& InParams);
+
+	UAuraWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& InParams);
 
 protected:
 
@@ -41,9 +44,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAuraUserWidget> MainPanelClass;
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UMainPanelWidgetController> MainPanelWidgetControllerClass;
-
 	UPROPERTY()
 	TObjectPtr<UMainPanelWidgetController> MainPanelWidgetController;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
 };

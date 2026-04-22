@@ -6,7 +6,7 @@
 
 void FAuraEnumToGASManager::Init()
 {
-	auto                   TargetSEnum = StaticEnum<EAuraAttributeTypes>();
+	UEnum*                 TargetSEnum = StaticEnum<EAuraAttributeTypes>();
 	FAuraEnumToGASManager& Self        = Get();
 	Self.EnumToTagMapData.Reset();
 	Self.EnumToAttributeMapData.Reset();
@@ -87,7 +87,7 @@ void FAuraEnumToGASManager::Init()
 	}
 }
 
-FGameplayTag FAuraEnumToGASManager::GetGameplayTagByAttributeType(EAuraAttributeTypes InAttributeType)
+FGameplayTag FAuraEnumToGASManager::GetGameplayTagByEnum(EAuraAttributeTypes InAttributeType)
 {
 	if (FGameplayTag* Target = Get().EnumToTagMapData.Find(InAttributeType))
 	{
@@ -95,4 +95,14 @@ FGameplayTag FAuraEnumToGASManager::GetGameplayTagByAttributeType(EAuraAttribute
 	}
 
 	return FGameplayTag();
+}
+
+FGameplayAttribute FAuraEnumToGASManager::GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType)
+{
+	if (FGameplayAttribute* Target = Get().EnumToAttributeMapData.Find(InAttributeType))
+	{
+		return *Target;
+	}
+
+	return FGameplayAttribute();
 }
