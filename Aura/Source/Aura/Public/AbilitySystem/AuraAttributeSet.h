@@ -28,7 +28,7 @@ struct FAuraEffectPropertiesData
 	TObjectPtr<ACharacter> SourceCharacter;
 
 	UPROPERTY()
-	UAbilitySystemComponent* TargetASC;
+	TObjectPtr<UAbilitySystemComponent> TargetASC;
 
 	UPROPERTY()
 	TObjectPtr<AActor> TargetAvatarActor;
@@ -184,7 +184,7 @@ public :
 
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldValue);
-	
+
 	UFUNCTION()
 	void OnRep_CriticalDamagePercentResistance(const FGameplayAttributeData& OldValue);
 

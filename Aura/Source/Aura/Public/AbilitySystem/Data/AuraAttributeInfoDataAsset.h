@@ -26,15 +26,16 @@ struct FAuraAttributeInfoData
 };
 
 /**
- * 
+ * For save game data
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class AURA_API UAuraAttributeInfoDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
 
 public:
 	FAuraAttributeInfoData FindAttributeInfoDataByTag(const FGameplayTag& InTag, bool bLogNotFound = false);
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FAuraAttributeInfoData> AuraAttributeInfos;
 };

@@ -30,20 +30,20 @@ struct FAuraGameplayEffectData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UGameplayEffect> GameplayEffectClass;
+	TSubclassOf<UGameplayEffect> GameplayEffectClass = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EGameplayEffectAddPolicy AddPolicy;
+	EGameplayEffectAddPolicy AddPolicy = EGameplayEffectAddPolicy::OnBeginOverlap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EGameplayEffectRemovePolicy RemovePolicy;
+	EGameplayEffectRemovePolicy RemovePolicy = EGameplayEffectRemovePolicy::OnEndOverlap;
 
 	UPROPERTY(
 		EditAnywhere,
 		BlueprintReadWrite,
 		meta = (EditCondition = "AddPolicy == EGameplayEffectAddPolicy::OnStayForSpecificTime", EditConditionHides)
 	)
-	float StayTimeToAdd;
+	float StayTimeToAdd = 0;
 };
 
 UCLASS()

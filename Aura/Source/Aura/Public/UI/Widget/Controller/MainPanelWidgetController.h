@@ -19,10 +19,10 @@ struct FUIWidgetDataRow : public FTableRowBase
 	FText Message = FText();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UAuraUserWidget> MessageWidget;
+	TSubclassOf<UAuraUserWidget> MessageWidget = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UTexture2D* MessageTexture;
+	UTexture2D* MessageTexture = nullptr;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthPointChangedSignature, float, InNewValue);
