@@ -2,12 +2,12 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
-#include "AuraEnumToGASManager.h"
+#include "AuraGASEnumManager.h"
 
 void UAuraAbilitySystemComponent::AbilityInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-	const FAuraEnumToGASManager& Ins = FAuraEnumToGASManager::Get();
+	const FAuraGASEnumManager& Ins = FAuraGASEnumManager::Get();
 	// for (auto KeyValuePair : Ins.AttributesTagMapData)
 	// {
 	// 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, KeyValuePair.Value.ToString());

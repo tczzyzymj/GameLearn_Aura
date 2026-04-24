@@ -26,7 +26,7 @@ struct FAuraAttributeInfoData
 };
 
 /**
- * For save game data
+ * 
  */
 UCLASS(BlueprintType, Blueprintable)
 class AURA_API UAuraAttributeInfoDataAsset : public UDataAsset

@@ -29,27 +29,24 @@ void AAuraHUD::InitializeHUD(
 
 UAuraWidgetController* AAuraHUD::GetMainPanelWidgetController(const FWidgetControllerParams& InParams)
 {
-	if (MainPanelWidgetController == nullptr)
-	{
-		MainPanelWidgetController = NewObject<UMainPanelWidgetController>(this, UMainPanelWidgetController::StaticClass());
-		MainPanelWidgetController->SetWidgetControllerParams(InParams);
-		MainPanelWidgetController->BindCallbacksToDependencies();
-	}
+	check(MainPanelWidgetControllerClass);
+	MainPanelWidgetController = NewObject<UMainPanelWidgetController>(this, MainPanelWidgetControllerClass);
+	MainPanelWidgetController->SetWidgetControllerParams(InParams);
+	MainPanelWidgetController->BindCallbacksToDependencies();
 
 	return MainPanelWidgetController;
 }
 
 UAuraWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& InParams)
 {
-	if (AttributeMenuWidgetController == nullptr)
-	{
-		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(
-			this,
-			UAttributeMenuWidgetController::StaticClass()
-		);
-		AttributeMenuWidgetController->SetWidgetControllerParams(InParams);
-		AttributeMenuWidgetController->BindCallbacksToDependencies();
-	}
+	check(AttributeMenuWidgetControllerClass);
 
-	return MainPanelWidgetController;
+	AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(
+		this,
+		AttributeMenuWidgetControllerClass
+	);
+	AttributeMenuWidgetController->SetWidgetControllerParams(InParams);
+	AttributeMenuWidgetController->BindCallbacksToDependencies();
+
+	return AttributeMenuWidgetController;
 }

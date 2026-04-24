@@ -2,7 +2,7 @@
 
 #include "AuraAssetManager.h"
 
-#include "AuraEnumToGASManager.h"
+#include "AuraGASEnumManager.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 UAuraAssetManager::UAuraAssetManager()
@@ -19,5 +19,5 @@ UAuraAssetManager& UAuraAssetManager::Get()
 void UAuraAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
-	FAuraEnumToGASManager::Init();
+	FAuraGASEnumManager::Init();
 }

@@ -44,8 +44,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAuraUserWidget> MainPanelClass;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UMainPanelWidgetController> MainPanelWidgetControllerClass;
+
 	UPROPERTY()
 	TObjectPtr<UMainPanelWidgetController> MainPanelWidgetController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;

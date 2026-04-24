@@ -2,13 +2,14 @@
 
 #include "Util/Blueprint/AuraBlueprintFunctionLibrary.h"
 
-#include "AuraEnumToGASManager.h"
+#include "AuraGASEnumManager.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
 #include "UI/Widget/Controller/AuraWidgetController.h"
 
-UAuraWidgetController* UAuraBlueprintFunctionLibrary::GetWidgetController(const UObject* WorldContextObject)
+UAuraWidgetController* UAuraBlueprintFunctionLibrary::GetMainPanelWidgetController(const UObject* WorldContextObject)
 {
 	APlayerController* TargetPC = UGameplayStatics::GetPlayerController(WorldContextObject, 0);
 	if (TargetPC == nullptr)
@@ -33,10 +34,29 @@ UAuraWidgetController* UAuraBlueprintFunctionLibrary::GetWidgetController(const 
 	return nullptr;
 }
 
-int32 UAuraBlueprintFunctionLibrary::GetEAttributeTypeValueByIndex(int32 InIndex)
+UAuraWidgetController* UAuraBlueprintFunctionLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
 {
-	auto TargetSEnum = StaticEnum<EAuraAttributeTypes>();
-	return TargetSEnum->GetValueByIndex(InIndex);
+	APlayerController* TargetPC = UGameplayStatics::GetPlayerController(WorldContextObject, 0);
+	if (TargetPC == nullptr)
+	{
+		return nullptr;
+	}
+	auto TargetPlayerState = TargetPC->GetPlayerState<AAuraPlayerState>();
+	if (TargetPlayerState == nullptr)
+	{
+		return nullptr;
+	}
+
+	auto TargetASC = TargetPlayerState->GetAbilitySystemComponent();
+	auto TargetAS  = TargetPlayerState->GetAttributeSet();
+
+	if (auto AuraHUD = Cast<AAuraHUD>(TargetPC->GetHUD()))
+	{
+		FWidgetControllerParams Params = FWidgetControllerParams(TargetPC, TargetPlayerState, TargetASC, TargetAS);
+		return AuraHUD->GetAttributeMenuWidgetController(Params);
+	}
+
+	return nullptr;
 }
 
 EAuraAttributeTypes UAuraBlueprintFunctionLibrary::GetEAttributeTypeByIndex(int32 InIndex)
@@ -53,10 +73,62 @@ EAuraAttributeTypes UAuraBlueprintFunctionLibrary::GetEAttributeTypeByIndex(int3
 
 FGameplayTag UAuraBlueprintFunctionLibrary::GetGameplayTagByEnum(EAuraAttributeTypes InType)
 {
-	return FAuraEnumToGASManager::GetGameplayTagByEnum(InType);
+	return FAuraGASEnumManager::GetGameplayTagByEnum(InType);
 }
 
 FGameplayAttribute UAuraBlueprintFunctionLibrary::GetGameplayAttributeByEnum(EAuraAttributeTypes InType)
 {
-	return FAuraEnumToGASManager::GetGameplayAttributeByEnum(InType);
+	return FAuraGASEnumManager::GetGameplayAttributeByEnum(InType);
+}
+
+float UAuraBlueprintFunctionLibrary::GetAttributeBaseValueByEnum(EAuraAttributeTypes InType, UAuraAttributeSet* InAttributeSet)
+{
+	if (!IsValid(InAttributeSet))
+	{
+		UE_LOG(LogTemp, Error, TEXT("UAuraBlueprintFunctionLibrary::GetAttributeBaseValueByEnum, but InAttributeSet==nullptr"));
+		return 0;
+	}
+	auto TargetAttribute = GetGameplayAttributeByEnum(InType);
+	if (!TargetAttribute.IsValid())
+	{
+		return INDEX_NONE;
+	}
+
+	FGameplayAttributeData* TargetData = TargetAttribute.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(
+		InAttributeSet
+	);
+
+	if (TargetData == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("UAuraBlueprintFunctionLibrary::GetAttributeBaseValueByEnum"))
+		return 0;
+	}
+
+	return TargetData->GetBaseValue();
+}
+
+float UAuraBlueprintFunctionLibrary::GetAttributeCurrentValueByEnum(EAuraAttributeTypes InType, UAuraAttributeSet* InAttributeSet)
+{
+	if (!IsValid(InAttributeSet))
+	{
+		UE_LOG(LogTemp, Error, TEXT("UAuraBlueprintFunctionLibrary::GetAttributeBaseValueByEnum, but InAttributeSet==nullptr"));
+		return 0;
+	}
+	auto TargetAttribute = GetGameplayAttributeByEnum(InType);
+	if (!TargetAttribute.IsValid())
+	{
+		return INDEX_NONE;
+	}
+
+	FGameplayAttributeData* TargetData = TargetAttribute.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(
+		InAttributeSet
+	);
+
+	if (TargetData == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("UAuraBlueprintFunctionLibrary::GetAttributeBaseValueByEnum"))
+		return 0;
+	}
+
+	return TargetData->GetCurrentValue();
 }

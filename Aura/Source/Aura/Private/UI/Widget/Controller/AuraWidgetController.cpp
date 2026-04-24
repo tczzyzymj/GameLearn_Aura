@@ -17,3 +17,7 @@ void UAuraWidgetController::BroadcastInitialValues()
 void UAuraWidgetController::BindCallbacksToDependencies()
 {
 }
+
+void UAuraWidgetController::RemoveBindDelegate(UUserWidget* InUserWidget)
+{
+}

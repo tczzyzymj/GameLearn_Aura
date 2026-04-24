@@ -11,23 +11,27 @@
  * Singleton containing native GameplayTags
  */
 
-struct FAuraEnumToGASManager
+struct FAuraGASEnumManager
 {
 public:
-	static FAuraEnumToGASManager& Get()
+	static FAuraGASEnumManager& Get()
 	{
-		static FAuraEnumToGASManager Ins;
+		static FAuraGASEnumManager Ins;
 		return Ins;
 	}
-	
+
 	static void Init();
 
 	static FGameplayTag GetGameplayTagByEnum(EAuraAttributeTypes InAttributeType);
-	
+
 	static FGameplayAttribute GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType);
+	
+	static EAuraAttributeTypes GetAttributeEnum(const FGameplayAttribute& InAttributeType);
 
 protected:
 	TMap<EAuraAttributeTypes, FGameplayTag> EnumToTagMapData;
 
 	TMap<EAuraAttributeTypes, FGameplayAttribute> EnumToAttributeMapData;
+	
+	TMap<FGameplayAttribute, EAuraAttributeTypes> AttributeToEnumMapData;
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "AuraGameDefine.h"
 #include "UObject/Object.h"
 #include "AuraWidgetController.generated.h"
 
@@ -52,11 +53,32 @@ struct FAuraAttributeChangeData
 		OldValue = 0;
 	}
 
+	FAuraAttributeChangeData(
+		const FGameplayAttribute& InAttribute,
+		float                     InOldValue,
+		float                     InNewValue,
+		EAuraAttributeTypes       InAttributeType
+	)
+	{
+		Attribute     = InAttribute;
+		NewValue      = InOldValue;
+		OldValue      = InNewValue;
+		AttributeType = InAttributeType;
+	}
+
 	FAuraAttributeChangeData(const FOnAttributeChangeData& InAttributeChangeData)
 	{
 		Attribute = InAttributeChangeData.Attribute;
 		NewValue  = InAttributeChangeData.NewValue;
 		OldValue  = InAttributeChangeData.OldValue;
+	}
+
+	FAuraAttributeChangeData(const FOnAttributeChangeData& InAttributeChangeData, EAuraAttributeTypes InAttributeType)
+	{
+		Attribute     = InAttributeChangeData.Attribute;
+		NewValue      = InAttributeChangeData.NewValue;
+		OldValue      = InAttributeChangeData.OldValue;
+		AttributeType = InAttributeType;
 	}
 
 	UPROPERTY(BlueprintReadOnly)
@@ -67,9 +89,12 @@ struct FAuraAttributeChangeData
 
 	UPROPERTY(BlueprintReadOnly)
 	float OldValue;
+
+	UPROPERTY(BlueprintReadOnly)
+	EAuraAttributeTypes AttributeType = EAuraAttributeTypes::None;
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, FAuraAttributeChangeData, InData);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, const FAuraAttributeChangeData&, InData);
 
 /**
  * 
@@ -86,6 +111,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void RemoveBindDelegate(UUserWidget* InUserWidget);
+
 	virtual void BindCallbacksToDependencies();
 
 protected:
@@ -100,4 +128,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	TSoftObjectPtr<UUserWidget> BindWidget;
 };

@@ -16,10 +16,12 @@ class AURA_API UAuraUserWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UObject> WidgetController;
+	TObjectPtr<UAuraWidgetController> WidgetController;
 
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetController(UObject* InWidgetController);
+	void SetWidgetController(UAuraWidgetController* InWidgetController);
+	
+	virtual void FinishDestroy() override;
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent)

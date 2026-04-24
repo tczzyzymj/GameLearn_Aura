@@ -63,12 +63,18 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthPointAttribute() ||
 	    Data.EvaluatedData.Attribute == GetMaxHealthPointAttribute())
 	{
-		SetHealthPoint(FMath::Clamp(GetHealthPoint(), 0.0f, GetMaxHealthPoint()));
+		if (GetHealthPoint() > GetMaxHealthPoint())
+		{
+			SetHealthPoint(FMath::Clamp(GetHealthPoint(), 0.0f, GetMaxHealthPoint()));
+		}
 	}
 	else if (Data.EvaluatedData.Attribute == GetManaPointAttribute() ||
 	         Data.EvaluatedData.Attribute == GetMaxManaPointAttribute())
 	{
-		SetManaPoint(FMath::Clamp(GetManaPoint(), 0.0f, GetMaxManaPoint()));
+		if (GetManaPoint() > GetMaxManaPoint())
+		{
+			SetManaPoint(FMath::Clamp(GetManaPoint(), 0.0f, GetMaxManaPoint()));
+		}
 	}
 }
 

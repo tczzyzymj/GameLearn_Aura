@@ -75,17 +75,17 @@ void AAuraPlayerCharacter::InitAbilityActorInfo()
 		ResultMapData.Add(static_cast<EAuraAttributeTypes>(TargetIndex), FGameplayAttribute(Property));
 	}
 
-	for (const auto& Pair : ResultMapData)
-	{
-		FGameplayAttributeData* ValuePtr = Pair.Value.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(GetAttributeSet());
-		UE_LOG(
-			LogTemp,
-			Error,
-			TEXT("Attributes : %s, Value : %f"),
-			*Pair.Value.GetUProperty()->GetName(),
-			ValuePtr->GetCurrentValue()
-		);
-	}
+	// for (const auto& Pair : ResultMapData)
+	// {
+	// 	FGameplayAttributeData* ValuePtr = Pair.Value.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(GetAttributeSet());
+	// 	UE_LOG(
+	// 		LogTemp,
+	// 		Error,
+	// 		TEXT("Attributes : %s, Value : %f"),
+	// 		*Pair.Value.GetUProperty()->GetName(),
+	// 		ValuePtr->GetCurrentValue()
+	// 	);
+	// }
 }
 
 // this is executed by server
