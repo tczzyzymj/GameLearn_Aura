@@ -46,35 +46,35 @@ void AAuraPlayerCharacter::InitAbilityActorInfo()
 
 	InitDefaultAttributes();
 
-	TMap<EAuraAttributeTypes, FGameplayAttribute> ResultMapData;
-	auto                                    TargetSEnum = StaticEnum<EAuraAttributeTypes>();
-	for (TFieldIterator<FProperty> It(UAuraAttributeSet::StaticClass()); It; ++It)
-	{
-		FProperty* Property = *It;
-
-		// 看是不是 struct
-		FStructProperty* StructProp = CastField<FStructProperty>(Property);
-		if (StructProp == nullptr)
-		{
-			continue;
-		}
-
-		// 看这个 struct 是不是 FGameplayAttributeData
-		if (StructProp->Struct != TBaseStructure<FGameplayAttributeData>::Get())
-		{
-			continue;
-		}
-
-		auto TargetIndex = TargetSEnum->GetValueByName(FName(StructProp->GetName()));
-		checkf(
-			TargetIndex != INDEX_NONE,
-			TEXT("Attribute 枚举和 AttributeSet 成员名字不匹配，成员名字:%s"),
-			*StructProp->Struct.GetName()
-		);
-
-		ResultMapData.Add(static_cast<EAuraAttributeTypes>(TargetIndex), FGameplayAttribute(Property));
-	}
-
+	// TMap<EAuraAttributeTypes, FGameplayAttribute> ResultMapData;
+	// auto                                    TargetSEnum = StaticEnum<EAuraAttributeTypes>();
+	// for (TFieldIterator<FProperty> It(UAuraAttributeSet::StaticClass()); It; ++It)
+	// {
+	// 	FProperty* Property = *It;
+	//
+	// 	// 看是不是 struct
+	// 	FStructProperty* StructProp = CastField<FStructProperty>(Property);
+	// 	if (StructProp == nullptr)
+	// 	{
+	// 		continue;
+	// 	}
+	//
+	// 	// 看这个 struct 是不是 FGameplayAttributeData
+	// 	if (StructProp->Struct != TBaseStructure<FGameplayAttributeData>::Get())
+	// 	{
+	// 		continue;
+	// 	}
+	//
+	// 	auto TargetIndex = TargetSEnum->GetValueByName(FName(StructProp->GetName()));
+	// 	checkf(
+	// 		TargetIndex != INDEX_NONE,
+	// 		TEXT("Attribute 枚举和 AttributeSet 成员名字不匹配，成员名字:%s"),
+	// 		*StructProp->Struct.GetName()
+	// 	);
+	//
+	// 	ResultMapData.Add(static_cast<EAuraAttributeTypes>(TargetIndex), FGameplayAttribute(Property));
+	// }
+	//
 	// for (const auto& Pair : ResultMapData)
 	// {
 	// 	FGameplayAttributeData* ValuePtr = Pair.Value.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(GetAttributeSet());

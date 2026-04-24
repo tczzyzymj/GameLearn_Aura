@@ -13,13 +13,14 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	auto TargetSEnum = StaticEnum<EAuraAttributeTypes>();
 	for (int Index = 1; Index < TargetSEnum->NumEnums() - 1; ++Index)
 	{
-		auto TargetEnum      = static_cast<EAuraAttributeTypes>(TargetSEnum->GetValueByIndex(Index));
-		auto TargetAttribute = UAuraBlueprintFunctionLibrary::GetGameplayAttributeByEnum(TargetEnum);
+		EAuraAttributeTypes TargetEnum      = static_cast<EAuraAttributeTypes>(TargetSEnum->GetValueByIndex(Index));
+		auto                TargetAttribute = UAuraBlueprintFunctionLibrary::GetGameplayAttributeByEnum(TargetEnum);
 
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute).AddLambda(
-			[this](const FOnAttributeChangeData& InData)
+			[this, TargetEnum](const FOnAttributeChangeData& InData)
 			{
-				FAuraAttributeChangeData NewData = FAuraAttributeChangeData(InData);
+				UE_LOG(LogTemp, Warning, TEXT("UAttributeMenuWidgetController::BindCallbacksToDependencies()"));
+				FAuraAttributeChangeData NewData = FAuraAttributeChangeData(InData, TargetEnum);
 				OnAttributeChangedCallback.Broadcast(NewData);
 			}
 		);

@@ -40,6 +40,8 @@ struct FAuraEffectPropertiesData
 	TObjectPtr<ACharacter> TargetCharacter;
 };
 
+// template <class T>
+// using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 /**
  * 
  */
@@ -195,6 +197,8 @@ public :
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	
+	TMap<FGameplayTag, FGameplayAttribute(*)()> TestMap;
 
 protected:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& InEffectData, FAuraEffectPropertiesData& OutPropsData);

@@ -46,11 +46,8 @@ USTRUCT(BlueprintType)
 struct FAuraAttributeChangeData
 {
 	GENERATED_USTRUCT_BODY()
-
 	FAuraAttributeChangeData()
 	{
-		NewValue = 0;
-		OldValue = 0;
 	}
 
 	FAuraAttributeChangeData(
@@ -64,13 +61,6 @@ struct FAuraAttributeChangeData
 		NewValue      = InOldValue;
 		OldValue      = InNewValue;
 		AttributeType = InAttributeType;
-	}
-
-	FAuraAttributeChangeData(const FOnAttributeChangeData& InAttributeChangeData)
-	{
-		Attribute = InAttributeChangeData.Attribute;
-		NewValue  = InAttributeChangeData.NewValue;
-		OldValue  = InAttributeChangeData.OldValue;
 	}
 
 	FAuraAttributeChangeData(const FOnAttributeChangeData& InAttributeChangeData, EAuraAttributeTypes InAttributeType)
