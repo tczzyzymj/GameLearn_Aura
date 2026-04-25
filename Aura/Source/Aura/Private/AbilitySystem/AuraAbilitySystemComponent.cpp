@@ -14,6 +14,16 @@ void UAuraAbilitySystemComponent::AbilityInfoSet()
 	// }
 }
 
+void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities)
+{
+	for (TSubclassOf<UGameplayAbility> SingleAbility : InAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec(SingleAbility);
+		// GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void UAuraAbilitySystemComponent::EffectApplied(
 	UAbilitySystemComponent*    InTargetASC,
 	const FGameplayEffectSpec&  InEffectSpec,

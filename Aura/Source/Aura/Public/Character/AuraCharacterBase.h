@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Abilities/GameplayAbility.h"
 #include "Interaction/AuraCombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
@@ -33,6 +34,8 @@ protected:
 	virtual void InitAbilityActorInfo();
 
 	void InitDefaultAttributes() const;
+	
+	void AddCharacterAbilities();
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -51,4 +54,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesGameplayEffect;
+private:
+	UPROPERTY(EditAnywhere, Category = "Aura | GAS Init")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };

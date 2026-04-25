@@ -6,10 +6,72 @@
 
 void FAuraGASEnumManager::Init()
 {
-	UEnum*               TargetSEnum = StaticEnum<EAuraAttributeTypes>();
+	FAuraGASEnumManager& Self = Get();
+	Self.InternalInitForAttributes();
+	Self.InternalInitForInputTags();
+}
+
+const FGameplayTag& FAuraGASEnumManager::GetAttributeGameplayTagByEnum(EAuraAttributeTypes InAttributeType)
+{
+	if (FGameplayTag* Target = Get().AttributeEnumToTagMapData.Find(InAttributeType))
+	{
+		return *Target;
+	}
+
+	// // 获取全局唯一的 GameplayTagsManager 实例
+	// UGameplayTagsManager& TagManager = UGameplayTagsManager::Get();
+	//
+	// // 构造你想查询的父标签，例如 "Attribute.A"
+	// FGameplayTag ParentTag = FGameplayTag::RequestGameplayTag(FName("Attribute.Primary"));
+	//
+	// // 获取包含该父标签所有子标签的容器（不含父标签自身）
+	// FGameplayTagContainer ChildrenTags = TagManager.RequestGameplayTagChildren(ParentTag);
+	//
+	// // 现在可以遍历 ChildrenTags 来操作每个子标签
+	// for (const FGameplayTag& Tag : ChildrenTags)
+	// {
+	// 	UE_LOG(LogTemp, Log, TEXT("Found child tag: %s"), *Tag.ToString());
+	// }
+
+	return Get().InvalidGameplayTag;
+}
+
+const FGameplayTag& FAuraGASEnumManager::GetInputGameplayTagByEnum(EAuraInputTypes InType)
+{
+	if (auto TargetTag = Get().InputEnumToTagMapData.Find(InType))
+	{
+		return *TargetTag;
+	}
+
+	return Get().InvalidGameplayTag;
+}
+
+FGameplayAttribute FAuraGASEnumManager::GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType)
+{
+	if (FGameplayAttribute* Target = Get().AttributeEnumToGAMapData.Find(InAttributeType))
+	{
+		return *Target;
+	}
+
+	return FGameplayAttribute();
+}
+
+EAuraAttributeTypes FAuraGASEnumManager::GetAttributeEnum(const FGameplayAttribute& InAttributeType)
+{
+	if (auto TargetEnum = Get().AttributeToAttriEnumMapData.Find(InAttributeType))
+	{
+		return *TargetEnum;
+	}
+
+	return EAuraAttributeTypes::None;
+}
+
+void FAuraGASEnumManager::InternalInitForAttributes()
+{
 	FAuraGASEnumManager& Self        = Get();
-	Self.EnumToTagMapData.Reset();
-	Self.EnumToAttributeMapData.Reset();
+	UEnum*               TargetSEnum = StaticEnum<EAuraAttributeTypes>();
+	Self.AttributeEnumToTagMapData.Reset();
+	Self.AttributeEnumToGAMapData.Reset();
 	for (TFieldIterator<FProperty> It(UAuraAttributeSet::StaticClass()); It; ++It)
 	{
 		FProperty* Property = *It;
@@ -36,8 +98,8 @@ void FAuraGASEnumManager::Init()
 
 		auto TargetAttribute = FGameplayAttribute(Property);
 		auto TargetEnum      = static_cast<EAuraAttributeTypes>(TargetEnumValue);
-		Self.EnumToAttributeMapData.Add(TargetEnum, TargetAttribute);
-		Self.AttributeToEnumMapData.Add(TargetAttribute, TargetEnum);
+		Self.AttributeEnumToGAMapData.Add(TargetEnum, TargetAttribute);
+		Self.AttributeToAttriEnumMapData.Add(TargetAttribute, TargetEnum);
 
 		// 注册 GameplayTags
 		{
@@ -49,23 +111,20 @@ void FAuraGASEnumManager::Init()
 				*TargetSEnum->GetAuthoredNameStringByIndex(TargetEnumIndex)
 			);
 
-			auto TagDevComment = TargetSEnum->GetMetaData(TEXT("TagDevComment"), TargetEnumIndex);
-
-			FString TagName = FString::Printf(
+			auto    TagDevComment = TargetSEnum->GetMetaData(TEXT("TagDevComment"), TargetEnumIndex);
+			FString TagName       = FString::Printf(
 				TEXT("Attributes.%s.%s"),
 				*Importance,
 				*TargetSEnum->GetAuthoredNameStringByIndex(TargetEnumIndex)
 			);
-
-			FName        FinalName(TagName);
 			FGameplayTag TargetTag = UGameplayTagsManager::Get().AddNativeGameplayTag(
-				FinalName,
+				FName(TagName),
 				TagDevComment
 			);
 
 			check(TargetTag.IsValid());
 
-			Self.EnumToTagMapData.Add(
+			Self.AttributeEnumToTagMapData.Add(
 				static_cast<EAuraAttributeTypes>(TargetEnumValue),
 				TargetTag
 			);
@@ -74,7 +133,7 @@ void FAuraGASEnumManager::Init()
 
 	for (int Index = 1; Index < TargetSEnum->NumEnums() - 1; ++Index)
 	{
-		const FGameplayTag* FindTarget = Self.EnumToTagMapData.Find(
+		const FGameplayTag* FindTarget = Self.AttributeEnumToTagMapData.Find(
 			static_cast<EAuraAttributeTypes>(TargetSEnum->GetValueByIndex(Index))
 		);
 
@@ -86,47 +145,27 @@ void FAuraGASEnumManager::Init()
 	}
 }
 
-FGameplayTag FAuraGASEnumManager::GetGameplayTagByEnum(EAuraAttributeTypes InAttributeType)
+void FAuraGASEnumManager::InternalInitForInputTags()
 {
-	if (FGameplayTag* Target = Get().EnumToTagMapData.Find(InAttributeType))
+	auto TargetSEnum = StaticEnum<EAuraInputTypes>();
+	for (int Index = 0; Index < TargetSEnum->NumEnums() - 1; ++Index)
 	{
-		return *Target;
+		auto    TargetEnumValue = TargetSEnum->GetValueByIndex(Index);
+		auto    TagDevComment   = TargetSEnum->GetMetaData(TEXT("TagDevComment"), Index);
+		FString TagName         = FString::Printf(
+			TEXT("Input.%s"),
+			*TargetSEnum->GetAuthoredNameStringByIndex(Index)
+		);
+		FGameplayTag TargetTag = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName(TagName),
+			TagDevComment
+		);
+
+		check(TargetTag.IsValid());
+
+		Get().InputEnumToTagMapData.Add(
+			static_cast<EAuraInputTypes>(TargetEnumValue),
+			TargetTag
+		);
 	}
-	
-	// // 获取全局唯一的 GameplayTagsManager 实例
-	// UGameplayTagsManager& TagManager = UGameplayTagsManager::Get();
-	//
-	// // 构造你想查询的父标签，例如 "Attribute.A"
-	// FGameplayTag ParentTag = FGameplayTag::RequestGameplayTag(FName("Attribute.Primary"));
-	//
-	// // 获取包含该父标签所有子标签的容器（不含父标签自身）
-	// FGameplayTagContainer ChildrenTags = TagManager.RequestGameplayTagChildren(ParentTag);
-	//
-	// // 现在可以遍历 ChildrenTags 来操作每个子标签
-	// for (const FGameplayTag& Tag : ChildrenTags)
-	// {
-	// 	UE_LOG(LogTemp, Log, TEXT("Found child tag: %s"), *Tag.ToString());
-	// }
-
-	return FGameplayTag();
-}
-
-FGameplayAttribute FAuraGASEnumManager::GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType)
-{
-	if (FGameplayAttribute* Target = Get().EnumToAttributeMapData.Find(InAttributeType))
-	{
-		return *Target;
-	}
-
-	return FGameplayAttribute();
-}
-
-EAuraAttributeTypes FAuraGASEnumManager::GetAttributeEnum(const FGameplayAttribute& InAttributeType)
-{
-	if (auto TargetEnum = Get().AttributeToEnumMapData.Find(InAttributeType))
-	{
-		return *TargetEnum;
-	}
-
-	return EAuraAttributeTypes::None;
 }

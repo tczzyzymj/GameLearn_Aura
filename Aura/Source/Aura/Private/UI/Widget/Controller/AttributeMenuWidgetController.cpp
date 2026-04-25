@@ -19,7 +19,6 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(TargetAttribute).AddLambda(
 			[this, TargetEnum](const FOnAttributeChangeData& InData)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("UAttributeMenuWidgetController::BindCallbacksToDependencies()"));
 				FAuraAttributeChangeData NewData = FAuraAttributeChangeData(InData, TargetEnum);
 				OnAttributeChangedCallback.Broadcast(NewData);
 			}
@@ -41,6 +40,10 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 			TEXT("枚举：%s,在 AuraAttributeSet 里面没有成员变量，请检查"),
 			*TargetSEnum->GetNameByIndex(Index).ToString()
 		);
+		if (!TargetAttribute.IsValid())
+		{
+			continue;
+		}
 		auto TargetData = TargetAttribute.GetUProperty()->ContainerPtrToValuePtr<FGameplayAttributeData>(AttributeSet);
 		auto CurValue = TargetData->GetCurrentValue();
 		FAuraAttributeChangeData NewData(TargetAttribute, CurValue, CurValue, TargetEnum);

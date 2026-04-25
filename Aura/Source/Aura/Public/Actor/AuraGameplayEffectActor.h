@@ -31,6 +31,9 @@ struct FAuraGameplayEffectData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> GameplayEffectClass = nullptr;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float EffectLevel = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EGameplayEffectAddPolicy AddPolicy = EGameplayEffectAddPolicy::OnBeginOverlap;
@@ -79,9 +82,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Aura GAS")
 	TArray<FAuraGameplayEffectData> GameplayEffectDataArray;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Aura GAS")
-	float Level = 1;
 
 	TMap<TObjectPtr<AActor>, TArray<FActiveGameplayEffectHandle>> ActorInfinityGameplayEffectMap;
 

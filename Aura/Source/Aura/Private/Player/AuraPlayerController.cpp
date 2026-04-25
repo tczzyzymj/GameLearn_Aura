@@ -3,9 +3,11 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraGASEnumManager.h"
 #include "EnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "EnhancedInputSubsystems.h"
+#include "Input/AuraEnhancedInputComponent.h"
 #include "Player/AuraPlayerState.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -28,7 +30,9 @@ void AAuraPlayerController::BeginPlay()
 
 	check(AuraContext);
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer()
+	);
 	if (Subsystem != nullptr)
 	{
 		Subsystem->AddMappingContext(AuraContext, 0);
@@ -48,8 +52,36 @@ void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UAuraEnhancedInputComponent* EnhancedInputComponent = CastChecked<UAuraEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+
+	check(InputConfigDataAsset);
+	EnhancedInputComponent->BindAbilityActions(
+		InputConfigDataAsset,
+		this,
+		&ThisClass::AbilityInputPress,
+		&ThisClass::AbilityInputRelease,
+		&ThisClass::AbilityInputHold
+	);
+	// {
+	// auto TargetSEnum = StaticEnum<EAuraInputTypes>();
+	// for (int Index = 0; Index < TargetSEnum->NumEnums() - 1; ++Index)
+	// {
+	// 	auto TargetInputAction = InputConfigDataAsset->FindInputActonByInputEnum(
+	// 		static_cast<EAuraInputTypes>(TargetSEnum->GetValueByIndex(Index))
+	// 	);
+	//
+	// 	if (TargetInputAction)
+	// 	{
+	// 		FEnhancedInputActionEventBinding& TargetBind = EnhancedInputComponent->BindAction(
+	// 			TargetInputAction,
+	// 			ETriggerEvent::Triggered,
+	// 			this,
+	// 			FName(TargetSEnum->GetAuthoredNameStringByIndex(Index))
+	// 		);
+	// 	}
+	// }
+	// }
 }
 
 void AAuraPlayerController::CursorTrace()
@@ -98,4 +130,22 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 		TargetPawn->AddMovementInput(ForwardDir, InputAxisVec.X);
 		TargetPawn->AddMovementInput(RightDir, InputAxisVec.Y);
 	}
+}
+
+void AAuraPlayerController::AbilityInputPress(EAuraInputTypes InType)
+{
+	auto InTag = FAuraGASEnumManager::GetInputGameplayTagByEnum(InType);
+	GEngine->AddOnScreenDebugMessage(1, 3, FColor::Blue, *InTag.ToString());
+}
+
+void AAuraPlayerController::AbilityInputRelease(EAuraInputTypes InType)
+{
+	auto InTag = FAuraGASEnumManager::GetInputGameplayTagByEnum(InType);
+	GEngine->AddOnScreenDebugMessage(2, 3, FColor::Red, *InTag.ToString());
+}
+
+void AAuraPlayerController::AbilityInputHold(EAuraInputTypes InType)
+{
+	auto InTag = FAuraGASEnumManager::GetInputGameplayTagByEnum(InType);
+	GEngine->AddOnScreenDebugMessage(3, 3, FColor::Yellow, *InTag.ToString());
 }

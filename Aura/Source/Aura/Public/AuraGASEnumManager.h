@@ -22,16 +22,25 @@ public:
 
 	static void Init();
 
-	static FGameplayTag GetGameplayTagByEnum(EAuraAttributeTypes InAttributeType);
+	static const FGameplayTag& GetAttributeGameplayTagByEnum(EAuraAttributeTypes InAttributeType);
+	
+	static const FGameplayTag& GetInputGameplayTagByEnum(EAuraInputTypes InType);
 
 	static FGameplayAttribute GetGameplayAttributeByEnum(EAuraAttributeTypes InAttributeType);
-	
+
 	static EAuraAttributeTypes GetAttributeEnum(const FGameplayAttribute& InAttributeType);
-
 protected:
-	TMap<EAuraAttributeTypes, FGameplayTag> EnumToTagMapData;
+	void InternalInitForAttributes();
 
-	TMap<EAuraAttributeTypes, FGameplayAttribute> EnumToAttributeMapData;
+	void InternalInitForInputTags();
+
+	TMap<EAuraAttributeTypes, FGameplayTag> AttributeEnumToTagMapData;
+
+	TMap<EAuraAttributeTypes, FGameplayAttribute> AttributeEnumToGAMapData;
+
+	TMap<FGameplayAttribute, EAuraAttributeTypes> AttributeToAttriEnumMapData;
 	
-	TMap<FGameplayAttribute, EAuraAttributeTypes> AttributeToEnumMapData;
+	TMap<EAuraInputTypes, FGameplayTag> InputEnumToTagMapData;
+	
+	FGameplayTag InvalidGameplayTag;
 };

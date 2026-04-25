@@ -9,6 +9,17 @@ enum class EAuraAttributeImportance : uint8
 };
 
 UENUM(BlueprintType)
+enum class EAuraInputTypes : uint8
+{
+	LeftMouseBtn,
+	RightMouseBtn,
+	Keyboard_1,
+	Keyboard_2,
+	Keyboard_3,
+	Keyboard_4,
+};
+
+UENUM(BlueprintType)
 enum class EAuraAttributeTypes : uint8
 {
 	None,

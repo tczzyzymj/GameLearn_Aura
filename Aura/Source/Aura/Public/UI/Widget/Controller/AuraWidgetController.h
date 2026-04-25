@@ -75,10 +75,10 @@ struct FAuraAttributeChangeData
 	FGameplayAttribute Attribute;
 
 	UPROPERTY(BlueprintReadOnly)
-	float NewValue;
+	float NewValue = 0;
 
 	UPROPERTY(BlueprintReadOnly)
-	float OldValue;
+	float OldValue = 0;
 
 	UPROPERTY(BlueprintReadOnly)
 	EAuraAttributeTypes AttributeType = EAuraAttributeTypes::None;

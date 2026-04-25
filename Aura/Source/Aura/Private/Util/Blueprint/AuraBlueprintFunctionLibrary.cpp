@@ -73,7 +73,7 @@ EAuraAttributeTypes UAuraBlueprintFunctionLibrary::GetEAttributeTypeByIndex(int3
 
 FGameplayTag UAuraBlueprintFunctionLibrary::GetGameplayTagByEnum(EAuraAttributeTypes InType)
 {
-	return FAuraGASEnumManager::GetGameplayTagByEnum(InType);
+	return FAuraGASEnumManager::GetAttributeGameplayTagByEnum(InType);
 }
 
 FGameplayAttribute UAuraBlueprintFunctionLibrary::GetGameplayAttributeByEnum(EAuraAttributeTypes InType)
