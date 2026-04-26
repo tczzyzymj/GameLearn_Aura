@@ -25,6 +25,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UAttributeSet* GetAttributeSet() const;
+
+	virtual FVector GetWeaponSocketLocation() override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,11 +37,14 @@ protected:
 	virtual void InitAbilityActorInfo();
 
 	void InitDefaultAttributes() const;
-	
+
 	void AddCharacterAbilities();
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, Category = "Aura | Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+	UPROPERTY(EditAnywhere, Category = "Aura | Combat")
+	FName WeaponSocketName;
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -54,6 +60,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Aura | GAS Init")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributesGameplayEffect;
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Aura | GAS Init")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;

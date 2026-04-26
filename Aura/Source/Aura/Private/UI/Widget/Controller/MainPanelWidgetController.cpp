@@ -61,6 +61,8 @@ void UMainPanelWidgetController::BindCallbacksToDependencies()
 					UE_LOG(LogTemp, Warning, TEXT("MessageWidgetDataTable is nullptr"));
 					return;
 				}
+				
+				OnMessageWidget.Broadcast(FUIWidgetDataRow());
 			}
 		);
 	}

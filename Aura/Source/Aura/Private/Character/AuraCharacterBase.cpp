@@ -26,6 +26,12 @@ UAttributeSet* AAuraCharacterBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
+FVector AAuraCharacterBase::GetWeaponSocketLocation()
+{
+	check(Weapon);
+	return Weapon->GetSocketLocation(WeaponSocketName);
+}
+
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }

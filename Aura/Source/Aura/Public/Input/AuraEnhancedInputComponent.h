@@ -21,54 +21,54 @@ public:
 	void BindAbilityActions(
 		const UAuraInputConfigDataAsset* InConfigDataAsset,
 		UserClass*                       Object,
-		PressFuncType                    PressFunc,
-		ReleaseFuncType                  ReleaseFunc,
-		HoldFuncType                     HoldFunc
+		PressFuncType                    PressedFunc,
+		ReleaseFuncType                  ReleasedFunc,
+		HoldFuncType                     HeldFunc
 	);
 };
 
-template<class UserClass, typename PressFuncType, typename ReleaseFuncType, typename HoldFuncType>
+template<class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 void UAuraEnhancedInputComponent::BindAbilityActions(
 	const UAuraInputConfigDataAsset* InConfigDataAsset,
 	UserClass*                       Object,
-	PressFuncType                    PressFunc,
-	ReleaseFuncType                  ReleaseFunc,
-	HoldFuncType                     HoldFunc
+	PressedFuncType                  PressedFunc,
+	ReleasedFuncType                 ReleasedFunc,
+	HeldFuncType                     HeldFunc
 )
 {
 	check(InConfigDataAsset);
 
 	for (const TTuple<EAuraInputTypes, FAuraInputData>& Pair : InConfigDataAsset->AuraInputConfigMapData)
 	{
-		if (PressFunc)
+		if (PressedFunc)
 		{
 			BindAction(
 				Pair.Value.InputAction,
 				ETriggerEvent::Started,
 				Object,
-				PressFunc,
+				PressedFunc,
 				Pair.Key
 			);
 		}
 
-		if (ReleaseFunc)
+		if (ReleasedFunc)
 		{
 			BindAction(
 				Pair.Value.InputAction,
 				ETriggerEvent::Completed,
 				Object,
-				ReleaseFunc,
+				ReleasedFunc,
 				Pair.Key
 			);
 		}
 
-		if (HoldFunc)
+		if (HeldFunc)
 		{
 			BindAction(
 				Pair.Value.InputAction,
 				ETriggerEvent::Triggered,
 				Object,
-				HoldFunc,
+				HeldFunc,
 				Pair.Key
 			);
 		}

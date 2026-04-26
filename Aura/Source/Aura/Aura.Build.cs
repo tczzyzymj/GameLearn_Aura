@@ -23,6 +23,7 @@ public class Aura : ModuleRules
 				"ContentBrowser",
 				"Slate",
 				"SlateCore",
+				"NavigationSystem",
 			}
 		);
 

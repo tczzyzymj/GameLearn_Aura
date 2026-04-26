@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedPlayerInput.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "GameFramework/PlayerController.h"
 #include "Input/AuraInputConfigDataAsset.h"
@@ -21,6 +23,8 @@ public:
 	AAuraPlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+
+	UAuraAbilitySystemComponent* GetASC();
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,28 +48,27 @@ private:
 	TScriptInterface<IEnemyInterface> CurHoverActor;
 
 	void Move(const FInputActionValue& InputActionValue);
-	
-	void AbilityInputPress(EAuraInputTypes InType);
-	
-	void AbilityInputRelease(EAuraInputTypes InType);
-	
-	void AbilityInputHold(EAuraInputTypes InType);
 
-	// UFUNCTION()
-	// void LeftMouseBtn(const FInputActionValue& InputActionValue);
-	//
-	// UFUNCTION()
-	// void RightMouseBtn(const FInputActionValue& InputActionValue);
-	//
-	// UFUNCTION()
-	// void Keyboard_1(const FInputActionValue& InputActionValue);
-	//
-	// UFUNCTION()
-	// void Keyboard_2(const FInputActionValue& InputActionValue);
-	//
-	// UFUNCTION()
-	// void Keyboard_3(const FInputActionValue& InputActionValue);
-	//
-	// UFUNCTION()
-	// void Keyboard_4(const FInputActionValue& InputActionValue);
+	void AbilityInputPressed(EAuraInputTypes InType);
+
+	void AbilityInputReleased(EAuraInputTypes InType);
+
+	void AbilityInputHeld(EAuraInputTypes InType);
+
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+
+	FVector CachedDestination = FVector::ZeroVector;
+
+	float LMBPressedTime          = 0;
+	UPROPERTY(EditDefaultsOnly, Category = "Aura | PathFind")
+	float ShortPressTimeThreshold = 0.15f;
+	bool  bAutoRunning            = false;
+	bool  bTargeting              = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Aura | PathFind")
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USplineComponent> SplineComponent;
 };

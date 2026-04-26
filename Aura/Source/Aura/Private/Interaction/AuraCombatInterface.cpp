@@ -7,5 +7,10 @@
 
 int32 IAuraCombatInterface::GetCharacterLevel()
 {
-	return 0;
+	return 1;
+}
+
+FVector IAuraCombatInterface::GetWeaponSocketLocation()
+{
+	return FVector::ZeroVector;
 }

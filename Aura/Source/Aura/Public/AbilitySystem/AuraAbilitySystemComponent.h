@@ -18,14 +18,21 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
+	FOnEffectAppliedTagContainerDelegate OnEffectAppliedTagContainerDelegate;
+
 	void AbilityInfoSet();
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities);
 
-	FOnEffectAppliedTagContainerDelegate OnEffectAppliedTagContainerDelegate;
+	void AbilityInputPressed(const FGameplayTag& InputTag);
+
+	void AbilityInputReleased(const FGameplayTag& InputTag);
+
+	void AbilityInputHeld(const FGameplayTag& InputTag);
 
 protected:
-	void EffectApplied(
+	UFUNCTION(Client, Reliable)
+	void ClientEffectApplied(
 		UAbilitySystemComponent*    InTargetASC,
 		const FGameplayEffectSpec&  InEffectSpec,
 		FActiveGameplayEffectHandle InEffectHandle
