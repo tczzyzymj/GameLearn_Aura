@@ -13,7 +13,7 @@ void FAuraGASEnumManager::Init()
 
 const FGameplayTag& FAuraGASEnumManager::GetAttributeGameplayTagByEnum(EAuraAttributeTypes InAttributeType)
 {
-	if (FGameplayTag* Target = Get().AttributeEnumToTagMapData.Find(InAttributeType))
+	if (const FGameplayTag* Target = Get().AttributeEnumToTagMapData.Find(InAttributeType))
 	{
 		return *Target;
 	}

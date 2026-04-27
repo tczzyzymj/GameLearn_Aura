@@ -7,11 +7,6 @@
 void UAuraAbilitySystemComponent::AbilityInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
-	const FAuraGASEnumManager& Ins = FAuraGASEnumManager::Get();
-	// for (auto KeyValuePair : Ins.AttributesTagMapData)
-	// {
-	// 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, KeyValuePair.Value.ToString());
-	// }
 }
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InAbilities)

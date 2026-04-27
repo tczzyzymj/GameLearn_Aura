@@ -13,13 +13,18 @@ void UAuraProjectileSpellAbility::ActivateAbility(
 )
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+}
 
-	if (HasAuthority(&ActivationInfo))
+void UAuraProjectileSpellAbility::CreateProjectile() const
+{
+	if (GetAvatarActorFromActorInfo()->HasAuthority())
 	{
 		if (ProjectileActorClass)
 		{
 			FTransform SpawnTransform;
-			AActor*    OwningActor = GetOwningActorFromActorInfo();
+			FVector    ActorForward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
+			SpawnTransform.SetRotation(ActorForward.ToOrientationQuat());
+			AActor*    OwningActor  = GetOwningActorFromActorInfo();
 			check(OwningActor);
 			if (IAuraCombatInterface* CombatInterface = Cast<IAuraCombatInterface>(GetAvatarActorFromActorInfo()))
 			{

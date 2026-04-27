@@ -23,6 +23,9 @@ protected:
 		const FGameplayEventData*            TriggerEventData
 	) override;
 
+	UFUNCTION(BlueprintCallable)
+	void CreateProjectile() const;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AAuraProjectileActor> ProjectileActorClass;
 };
