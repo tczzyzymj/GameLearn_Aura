@@ -6,17 +6,17 @@
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/AuraCombatInterface.h"
 #include "Interaction/EnemyInterface.h"
-#include "AuraEnemy.generated.h"
+#include "AuraEnemyCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
+class AURA_API AAuraEnemyCharacter : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 
-	AAuraEnemy();
+	AAuraEnemyCharacter();
 
 public:
 	virtual void HighlightActor() override;

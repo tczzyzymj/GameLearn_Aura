@@ -1,12 +1,12 @@
 // Copyright NineForce Entertainment
 
-#include "Character/AuraEnemy.h"
+#include "Character/AuraEnemyCharacter.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 #include "Net/UnrealNetwork.h"
 
-AAuraEnemy::AAuraEnemy()
+AAuraEnemyCharacter::AAuraEnemyCharacter()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 
@@ -17,20 +17,20 @@ AAuraEnemy::AAuraEnemy()
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
-void AAuraEnemy::BeginPlay()
+void AAuraEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
 }
 
-void AAuraEnemy::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+void AAuraEnemyCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AAuraEnemy, Level);
+	DOREPLIFETIME(AAuraEnemyCharacter, Level);
 }
 
-void AAuraEnemy::InitAbilityActorInfo()
+void AAuraEnemyCharacter::InitAbilityActorInfo()
 {
 	check(AbilitySystemComponent);
 
@@ -40,11 +40,11 @@ void AAuraEnemy::InitAbilityActorInfo()
 	InitDefaultAttributes();
 }
 
-void AAuraEnemy::OnRep_Level(int32 OldValue)
+void AAuraEnemyCharacter::OnRep_Level(int32 OldValue)
 {
 }
 
-void AAuraEnemy::HighlightActor()
+void AAuraEnemyCharacter::HighlightActor()
 {
 	bHighlighted = true;
 	if (USkeletalMeshComponent* TargetMesh = GetMesh())
@@ -60,7 +60,7 @@ void AAuraEnemy::HighlightActor()
 	}
 }
 
-void AAuraEnemy::UnHighlightActor()
+void AAuraEnemyCharacter::UnHighlightActor()
 {
 	bHighlighted = false;
 
@@ -75,7 +75,7 @@ void AAuraEnemy::UnHighlightActor()
 	}
 }
 
-int32 AAuraEnemy::GetCharacterLevel()
+int32 AAuraEnemyCharacter::GetCharacterLevel()
 {
 	return Level;
 }

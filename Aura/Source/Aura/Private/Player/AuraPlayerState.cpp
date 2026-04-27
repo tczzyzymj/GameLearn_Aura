@@ -19,14 +19,6 @@ AAuraPlayerState::AAuraPlayerState()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
-	// TMap<EAuraAttributeTypes, FGetterFunc> MapData;
-	// MapData.Add(EAuraAttributeTypes::HealthPoint, &UAuraAttributeSet::GetHealthPoint);
-	// auto TargetAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
-	// if (auto Func = MapData.Find(EAuraAttributeTypes::HealthPoint))
-	// {
-	// 	float Health = (TargetAttributeSet->*(*Func))();
-	// 	UE_LOG(LogTemp, Warning, TEXT("Health is %f"), Health);
-	// }
 }
 
 void AAuraPlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
